@@ -16,7 +16,7 @@ class Point {
         this.ctx = canvas2.getContext("2d");
 
         this.ctx.beginPath();
-        this.ctx.arc(x, y, 1, 0, 2 * Math.PI);
+        this.ctx.arc(x, y, 2, 0, 2 * Math.PI);
         this.ctx.fillStyle = "black"
         this.ctx.fill();
         this.ctx.closePath()
@@ -67,6 +67,7 @@ let borderPointCount = 0
 let counter = 0
 
 function Unknown() {
+    console.log("fii")
     SetupPoint()
     borderPointCount = 0
     counter = 0
@@ -140,14 +141,11 @@ function Unknown() {
     }
 }
 Unknown()
-setInterval(() => {
-    Unknown()
-}, 1000);
 
 function DrawEvalLinearGradientLine(pos_a, pos_b, size, canvas) {
     let ctx = canvas.getContext("2d");
     let grd = ctx.createLinearGradient(pos_a.x, pos_a.y, pos_b.x, pos_b.y)
-    grd.addColorStop(0, `hsla(${360 / borderPointCount * counter}, 100%, 50%, 0)`)
+    grd.addColorStop(0.1, `hsla(${360 / borderPointCount * counter}, 100%, 50%, 0)`)
     grd.addColorStop(1, `hsla(${360 / borderPointCount * counter}, 100%, 50%, 1)`)
     ctx.strokeStyle = grd
     ctx.beginPath()
@@ -188,3 +186,8 @@ function filter(element, array) {
 function getVector(a, b) {
     return new Vector(b.x - a.x, b.y - a.y)
 }
+document.getElementById('foo').addEventListener('click', function(e) {
+    Unknown()
+  });
+document.getElementById('inputPointCount').value = 100
+document.getElementById('inputPointCount').oninput = (() => pointCount = Number(document.getElementById('inputPointCount').value))
