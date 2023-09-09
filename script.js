@@ -140,6 +140,9 @@ function Unknown() {
     }
 }
 Unknown()
+setInterval(() => {
+    Unknown()
+}, 1000);
 
 function DrawEvalLinearGradientLine(pos_a, pos_b, size, canvas) {
     let ctx = canvas.getContext("2d");
