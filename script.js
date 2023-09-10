@@ -3,7 +3,7 @@ let canvas1 = document.getElementById("canvas1")
 
 let points = []
 let pointCount = 100
-let buffer = 20
+let buffer = 30
 let halfWidthCanvas = 650
 let halfHeightCanvas = 270
 let width, height, widthContent, heightContent
