@@ -35,12 +35,18 @@ class Vector {
         this.y = y
     }
 }
+let limit = 0
 function SetupPoint() {
     points = []
     width = window.innerWidth
     height = window.innerHeight
+    halfWidthCanvas = width / 2
+    halfHeightCanvas = height / 2
     xContent = width - buffer
     yContent = height - buffer
+    if (width > height) {
+        limit = height - buffer * 2
+    } else limit = width - buffer * 2
     canvas0.width = width
     canvas0.height = height
     canvas0.style.width = width + "px"
@@ -52,9 +58,14 @@ function SetupPoint() {
     canvas0.getContext('2d').clearRect(0, 0, canvas0.width, canvas0.height);
     canvas1.getContext('2d').clearRect(0, 0, canvas1.width, canvas1.height);
     for (let i = 0; i < pointCount; i++) {
-        points[i] = new Point(
-            randomInt(buffer, xContent),
-            randomInt(buffer, yContent))
+        let x = randomInt(buffer, xContent)
+        let y = randomInt(buffer, yContent)
+        while ((x - halfWidthCanvas) * (x - halfWidthCanvas) + (y - halfHeightCanvas) * (y - halfHeightCanvas) > limit * limit / 4) {
+            x = randomInt(buffer, xContent)
+            y = randomInt(buffer, yContent)
+        }
+        points[i] = new Point(x, y)
+
     }
     points.sort((a, b) => a.y - b.y)
 }
@@ -181,8 +192,8 @@ function filter(element, array) {
 function getVector(a, b) {
     return new Vector(b.x - a.x, b.y - a.y)
 }
-document.getElementById('foo').addEventListener('click', function(e) {
+document.getElementById('foo').addEventListener('click', function (e) {
     Unknown()
-  });
+});
 document.getElementById('inputPointCount').value = 100
 document.getElementById('inputPointCount').oninput = (() => pointCount = Number(document.getElementById('inputPointCount').value))
