@@ -58,23 +58,42 @@ function SetupPoint() {
     canvas0.getContext('2d').clearRect(0, 0, canvas0.width, canvas0.height);
     canvas1.getContext('2d').clearRect(0, 0, canvas1.width, canvas1.height);
     for (let i = 0; i < pointCount; i++) {
-        let x = randomInt(buffer, xContent)
-        let y = randomInt(buffer, yContent)
+        let x = randomFloat(buffer, xContent)
+        let y = randomFloat(buffer, yContent)
         while ((x - halfWidthCanvas) * (x - halfWidthCanvas) + (y - halfHeightCanvas) * (y - halfHeightCanvas) > limit * limit / 4) {
-            x = randomInt(buffer, xContent)
-            y = randomInt(buffer, yContent)
+            x = randomFloat(buffer, xContent)
+            y = randomFloat(buffer, yContent)
         }
         points[i] = new Point(x, y)
 
     }
-    points.sort((a, b) => a.y - b.y)
+    let foo = randomInt(0, 5)
+    switch (foo) {
+        case 0:
+            points.sort((a, b) => a.x - b.x)
+            break
+        case 1:
+            points.sort((a, b) => a.y - b.y)
+            break
+        case 2:
+            points.sort((a, b) => b.x - a.x)
+            break
+        case 3:
+            points.sort((a, b) => b.y - a.y)
+            break
+        case 4:
+            points.sort((a, b) => Math.abs(a.x) + Math.abs(a.y) - Math.abs(b.x) - Math.abs(b.y))
+            break
+        case 5:
+            points.sort((a, b) => Math.abs(b.x) + Math.abs(b.y) - Math.abs(a.x) - Math.abs(a.y))
+            break
+    }
 }
 let borderPointCount = 0
 let counter = 0
 
 function Unknown() {
     SetupPoint()
-    console.log(points.length)
     borderPointCount = 0
     counter = 0
     let reusePoints = [...points]
@@ -111,6 +130,7 @@ function Unknown() {
     starterStarter = points[0]
     candidate = points[0], length = 0
     borderPoints = [starterStarter]
+
     for (let i = 0; i < points.length; i++) {
         length = zCrossProduct(getVector(borderPoints[borderPoints.length - 1], points[i]), getVector(borderPoints[borderPoints.length - 1], candidate))
         if (length <= 0) {
@@ -147,7 +167,6 @@ function Unknown() {
     }
 }
 Unknown()
-
 function DrawEvalLinearGradientLine(pos_a, pos_b, size, canvas) {
     let ctx = canvas.getContext("2d");
     let grd = ctx.createLinearGradient(pos_a.x, pos_a.y, pos_b.x, pos_b.y)
@@ -176,9 +195,13 @@ function WipeCanvas(canvasToWipe) {
     const context = canvasToWipe.getContext('2d');
     context.clearRect(0, 0, canvasToWipe.width, canvasToWipe.height);
 }
-function randomInt(min, max) {
+function randomFloat(min, max) {
     return Math.random() * (max - min) + min;
 }
+function randomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
 function dotProduct(a, b) {
     return a.x * b.x + a.y * b.y
 }
